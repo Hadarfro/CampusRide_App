@@ -88,6 +88,3 @@ public class User {
     }
 
 }
-
-
-
