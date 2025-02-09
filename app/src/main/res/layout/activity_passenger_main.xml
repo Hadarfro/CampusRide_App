@@ -62,7 +62,7 @@
             android:id="@+id/create_ride_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="צור נסיעה חדשה"
+            android:text="חפש נסיעה"
             android:backgroundTint="@color/light_green"
             android:layout_marginBottom="10dp"/>
     </LinearLayout>
