@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,6 +17,8 @@ import com.example.projectcampusride.NotificationAdapter;
 import com.example.projectcampusride.NotificationModel;
 import com.example.projectcampusride.NotificationsAdapter;
 import com.example.projectcampusride.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +33,7 @@ public class NotificationsActivity extends AppCompatActivity {
     private ListView listViewNotifications;
     private FirebaseFirestore firestore;
     private String userId;
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,8 @@ public class NotificationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notifications);
 
         listViewNotifications = findViewById(R.id.listView_notifications);
-        userId = getIntent().getStringExtra("USER_ID");
+        //userId = getIntent().getStringExtra("USER_ID");
+        userId = currentUser.getUid();
 
         if (userId == null || userId.isEmpty()) {
             Toast.makeText(this, "User ID is missing!", Toast.LENGTH_SHORT).show();
@@ -47,28 +52,39 @@ public class NotificationsActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> onBackPressed());
+
         loadNotifications();
     }
 
     private void loadNotifications() {
         firestore.collection("users").document(userId).collection("notifications")
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
+                .addSnapshotListener((querySnapshot, e) -> {
+                    if (e != null) {
+                        Log.e("NotificationsActivity", "Listen failed.", e);
+                        return;
+                    }
+
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
                         List<Map<String, Object>> notifications = new ArrayList<>();
-                        for (DocumentSnapshot document : task.getResult()) {
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
                             Map<String, Object> notification = document.getData();
-                            notification.put("id", document.getId()); // שמירת מזהה המסמך
+                            notification.put("id", document.getId());
                             notifications.add(notification);
+                            Log.d("NotificationsActivity", "Loaded notification: " + notification.toString());
                         }
                         updateListView(notifications);
                     } else {
-                        Toast.makeText(this, "Failed to load notifications.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "No notifications found.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
+
+
     private void updateListView(List<Map<String, Object>> notifications) {
+        Log.d("NotificationsActivity", "Updating ListView with " + notifications.size() + " notifications.");
         NotificationsAdapter adapter = new NotificationsAdapter(this, notifications, userId);
         listViewNotifications.setAdapter(adapter);
     }

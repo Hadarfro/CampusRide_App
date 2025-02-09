@@ -9,7 +9,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectcampusride.R;
-import com.example.projectcampusride.RideManager;
 import com.example.projectcampusride.models.Ride;
 import com.example.projectcampusride.models.User;
 import com.example.projectcampusride.models.UserRole;

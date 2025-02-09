@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,15 +61,10 @@ public class ProfileActivity extends AppCompatActivity {
         tvId = findViewById(R.id.tv_id);
         tvPhone = findViewById(R.id.tv_phone);
         tvRating = findViewById(R.id.tv_rating);
-        btnRateDriver = findViewById(R.id.btn_rate_driver);
 
 
-        // טיפול בלחיצה על כפתור הדירוג
-        btnRateDriver.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, com.example.projectcampusride.RateDriverActivity.class);
-            intent.putExtra("USER_ID", userId); // העברת userId ל־RateDriverActivity
-            startActivityForResult(intent, 1);
-        });
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> onBackPressed());
     }
 
 

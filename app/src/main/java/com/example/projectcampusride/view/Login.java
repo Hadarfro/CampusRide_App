@@ -19,7 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.projectcampusride.MainMenuActivity;
 import com.example.projectcampusride.R;
-import com.example.projectcampusride.view.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
