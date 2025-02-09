@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,7 +21,7 @@
         android:theme="@style/Theme.ProjectCampusRide"
         tools:targetApi="31">
         <activity
-            android:name="MainMenuActivity"
+            android:name=".view.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,13 +29,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MatchActivity"/>
+        <activity android:name=".view.MatchActivity"/>
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".view.NotificationsActivity"/>
         <activity android:name=".view.ProfileActivity"/>
         <activity android:name=".view.CreateRideActivity"/>
         <activity android:name=".view.PassengerMainActivity"/>
+        <activity android:name=".MainMenuActivity"/>
         <activity android:name=".view.SignUp"/>
+        <activity android:name=".view.DriverMainActivity"/>
+        <activity android:name=".view.MyRidesActivity"/>
+        <activity android:name=".RateDriverActivity"/>
+        <activity android:name=".view.SearchRideActivity"/>
+        <activity android:name=".view.DriverRidesActivity"/>
 
     </application>
 
