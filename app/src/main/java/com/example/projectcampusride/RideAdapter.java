@@ -11,7 +11,7 @@ import java.util.List;
 import com.example.projectcampusride.models.Ride;
 
 public class RideAdapter extends ArrayAdapter<Ride> {
-        private final List<Ride> rides;
+        private List<Ride> rides;
         private OnJoinClickListener joinClickListener;
 
         // Interface for click handling
@@ -27,6 +27,12 @@ public class RideAdapter extends ArrayAdapter<Ride> {
         public void setOnJoinClickListener(OnJoinClickListener listener) {
             this.joinClickListener = listener;
         }
+
+    public void updateData(List<Ride> newRides) {
+        this.rides = newRides;
+        notifyDataSetChanged();
+    }
+
 
     public void addAll(List<Ride> newRides) {
         rides.clear(); // Ensure old rides are cleared
@@ -63,6 +69,7 @@ public class RideAdapter extends ArrayAdapter<Ride> {
 
             return convertView;
         }
+
 
     public void clear() {
         rides.clear();

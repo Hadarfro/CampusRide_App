@@ -1,13 +1,16 @@
 package com.example.projectcampusride;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectcampusride.R;
+import com.example.projectcampusride.view.NotificationsActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RateDriverActivity extends AppCompatActivity {
@@ -26,9 +29,16 @@ public class RateDriverActivity extends AppCompatActivity {
         ratingBar = findViewById(R.id.ratingBar);
         btnSubmitRating = findViewById(R.id.btn_submit_rating);
         firestore = FirebaseFirestore.getInstance();
+        ImageButton settingsButton = findViewById(R.id.settings_button);
+        ImageButton notificationButton = findViewById(R.id.notification_button);
+
+        settingsButton.setOnClickListener(v -> startActivity(new Intent(this, com.example.projectcampusride.SettingsActivity.class)));
+        notificationButton.setOnClickListener(v -> startActivity(new Intent(this, NotificationsActivity.class)));
+        ImageButton backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(v -> onBackPressed());
 
         // קבלת ID של המשתמש שמדרגים
-        userId = getIntent().getStringExtra("USER_ID");
+        userId = getIntent().getStringExtra("driverId"); // Fix here
 
         if (userId == null || userId.isEmpty()) {
             Toast.makeText(this, "User ID is missing!", Toast.LENGTH_SHORT).show();

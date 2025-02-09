@@ -1,22 +1,38 @@
 package com.example.projectcampusride;
 
+import android.icu.text.SimpleDateFormat;
 import android.util.Log;
+
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import com.example.projectcampusride.models.RideStatus;
 
 public class NotificationUtils {
 
-    public static void addNotification(String userId, String message, String type) {
+    public static void addNotification(String userId, String message, String type, String passengerId, String passengerName, String requestId, String rideId) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
         Map<String, Object> notification = new HashMap<>();
         notification.put("message", message);
-        notification.put("timestamp", System.currentTimeMillis());
         notification.put("type", type);
         notification.put("status", "pending");
+        notification.put("passengerId", passengerId);
+        notification.put("passengerName", passengerName);
+        notification.put("requestId", requestId);
+        notification.put("rideId", rideId);
+
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        String formattedDate = sdf.format(new Date());
+
+        notification.put("createdAt", formattedDate);
+
 
         firestore.collection("users").document(userId).collection("notifications")
                 .add(notification)
@@ -43,15 +59,15 @@ public class NotificationUtils {
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to send join request notification.", e));
     }
 
-    public static void sendRideStatusNotification(String userId, String rideId, RideStatus status) {
+    public static void sendRideRequestStatusNotification(String userId, String rideId, String status) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         String message;
 
         switch (status) {
-            case COMPLETED:
+            case "accepted":
                 message = "Your ride request has been approved!";
                 break;
-            case CANCELLED:
+            case "declined":
                 message = "Your ride request has been cancelled.";
                 break;
             default:
@@ -63,12 +79,14 @@ public class NotificationUtils {
         notification.put("timestamp", System.currentTimeMillis());
         notification.put("type", "ride_status");
         notification.put("rideId", rideId);
-        notification.put("status", status.toString());
+        notification.put("status", status);
+
+
 
         firestore.collection("users").document(userId).collection("notifications")
                 .add(notification)
-                .addOnSuccessListener(docRef -> Log.d("Firestore", "Ride status notification sent: " + docRef.getId()))
-                .addOnFailureListener(e -> Log.e("Firestore", "Failed to send ride status notification.", e));
+                .addOnSuccessListener(docRef -> Log.d("Firestore", "Ride status request notification sent: " + docRef.getId()))
+                .addOnFailureListener(e -> Log.e("Firestore", "Failed to send ride request status notification.", e));
     }
 
     public static void updateExistingNotifications(String userId) {
