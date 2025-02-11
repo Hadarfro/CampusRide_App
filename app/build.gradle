@@ -42,9 +42,20 @@ dependencies {
     implementation libs.firebase.auth
     implementation libs.navigation.runtime
     implementation libs.navigation.ui
+    implementation libs.firebase.messaging
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation 'com.google.firebase:firebase-firestore:24.4.0' // Or the latest version
     implementation 'com.google.android.gms:play-services-auth:20.7.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'             // ActivityTestRule
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'  // Optional but useful for testing Intents
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'         // JUnit 4 integration for AndroidX
+    implementation 'com.google.firebase:firebase-messaging:23.0.6'
+    implementation 'androidx.core:core:1.9.0'
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+    implementation 'com.google.firebase:firebase-messaging'
+
+
+
 }
